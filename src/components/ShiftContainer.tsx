@@ -1,13 +1,14 @@
 type Props = {
     shiftIsNeeded: boolean
+    wrongKeyPressed: boolean
 }
 
-const ShiftContainer = ({ shiftIsNeeded }: Props) => {
+const ShiftContainer = ({ shiftIsNeeded, wrongKeyPressed }: Props) => {
 
     return (
         <button
             className={`h-12 w-32 flex items-center justify-center text-xl rounded-md 
-                ${shiftIsNeeded ? 'border-blue-500 text-blue-500 border-4 font-bold' : 'border-gray-500 text-gray-600 border-2'}`}
+                ${shiftIsNeeded && wrongKeyPressed ? 'border-red-500 text-red-500 border-4 font-bold' : shiftIsNeeded?  'border-blue-500 text-blue-500 border-4 font-bold' : 'border-gray-500 text-gray-600 border-2'}`}
         >
             Shift
         </button>

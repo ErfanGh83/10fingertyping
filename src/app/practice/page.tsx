@@ -44,11 +44,19 @@ const Page = () => {
     }, [started])
 
     useEffect(() => {
-        if (!started && pressedKey === ' ') {
-            setStarted(true)
+        if (!pressedKey) return;
+
+        // play sound for every key (except Shift, if you don’t want it)
+        if (pressedKey !== "Shift") {
+            const audio = new Audio("/sounds/keysound.wav");
+            audio.currentTime = 0;
+            audio.play().catch(() => { });
         }
-        else if (started && !running && pressedKey === ' ') {
-            setPaused(false)
+
+        if (!started && pressedKey === " ") {
+            setStarted(true);
+        } else if (started && !running && pressedKey === " ") {
+            setPaused(false);
         }
 
         if (nextChar && pressedKey && running) {
@@ -57,16 +65,16 @@ const Page = () => {
                     setWrongKeyPressed(true);
                     setWrongIndices((prev) => [...prev, index]);
                 }
-            }
-            else {
-                setTypedChars(prev => prev + 1)
-                setWrongKeyPressed(false)
-                setIndex(prev => prev + 1)
+            } else {
+                setTypedChars((prev) => prev + 1);
+                setWrongKeyPressed(false);
+                setIndex((prev) => prev + 1);
             }
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pressedKey])
+    }, [pressedKey]);
+
 
     useEffect(() => {
         setShiftIsNeeded(false)

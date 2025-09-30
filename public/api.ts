@@ -1,4 +1,20 @@
-export const keys = [
+export const keysList = [
+  // Number row (1 → 0 + symbols)
+  [
+    { key: '1', alt: '!' },
+    { key: '2', alt: '@' },
+    { key: '3', alt: '#' },
+    { key: '4', alt: '$' },
+    { key: '5', alt: '%' },
+    { key: '6', alt: '^' },
+    { key: '7', alt: '&' },
+    { key: '8', alt: '*' },
+    { key: '9', alt: '(' },
+    { key: '0', alt: ')' },
+    { key: '-', alt: '_' },
+    { key: '=', alt: '+' },
+  ],
+
   // Row 1 (Q → P)
   [
     { key: 'q', alt: 'Q' },
@@ -44,3 +60,7 @@ export const keys = [
     { key: '/', alt: '?' },
   ],
 ];
+
+
+
+export const exampleParagraph1 = 'Hello! this is a paragraph for practice.'

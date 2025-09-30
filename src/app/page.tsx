@@ -1,5 +1,9 @@
 export default function Home() {
   return (
-    <div></div>
+    <div
+      className="w-screen h-screen bg-white text-black"
+    >
+      Home
+    </div>
   );
 }

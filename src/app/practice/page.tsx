@@ -42,20 +42,20 @@ const Page = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [started])
 
-    useEffect(() => {
+    const handlePause = () => {
         if (started) {
-            if (paused) {
+            if (!paused) {
                 setRunning(false)
+                setPaused(true)
                 stop()
             }
             else {
                 setRunning(true)
+                setPaused(false)
                 start()
             }
         }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [paused])
+    }
 
     useEffect(() => {
         if (!started && pressedKey === ' ') {
@@ -86,7 +86,7 @@ const Page = () => {
 
         if (paragraph) {
             const nextCharacter = returnNextCharByIndex(paragraph, index)
-            if (nextCharacter) {
+            if (nextCharacter && index < paragraph.length) {
                 setNextChar(nextCharacter)
             }
             else {
@@ -101,6 +101,24 @@ const Page = () => {
             setShiftIsNeeded(true)
         }
     }, [nextChar])
+
+    useEffect(() => {
+        if (finished) {
+            setNextChar(null)
+            setRunning(false)
+            setStarted(false)
+            stop()
+        }
+    }, [finished])
+
+    const handleReset = () => {
+        setIndex(0)
+        setNextChar(null)
+        setPaused(false)
+        reset()
+        setStarted(false)
+        setFinished(false)
+    }
 
     return (
         <div
@@ -138,26 +156,38 @@ const Page = () => {
                     </div>
                 </div>
 
-                {
-                    !started &&
-                    <button
-                        onClick={() => setStarted(true)}
-                        className='size-fit p-2 rounded-md text-xl text-white cursor-pointer bg-blue-500 hover:bg-blue-600'
-                    >
-                        Start
-                    </button>
-                }
+                <div className='size-fit flex flex-row-reverse gap-4'>
+                    {
+                        !started && !finished &&
+                        <button
+                            onClick={() => setStarted(true)}
+                            className='size-fit p-2 rounded-md text-xl text-white cursor-pointer bg-blue-500 hover:bg-blue-600'
+                        >
+                            Start
+                        </button>
+                    }
 
-                {
-                    started &&
-                    <button
-                        onClick={() => setPaused(!paused)}
-                        className={`size-fit p-2 rounded-md text-xl text-white cursor-pointer ${running ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'
-                            }`}
-                    >
-                        {running ? 'Stop' : 'Continue'}
-                    </button>
-                }
+                    {
+                        started && !finished &&
+                        <button
+                            onClick={handlePause}
+                            className={`size-fit p-2 rounded-md text-xl text-white cursor-pointer ${running ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-blue-500 hover:bg-blue-600'
+                                }`}
+                        >
+                            {running ? 'Stop' : 'Continue'}
+                        </button>
+                    }
+
+                    {
+                        started &&
+                        <button
+                            onClick={handleReset}
+                            className='size-fit p-2 rounded-md text-xl text-white cursor-pointer bg-red-500 hover:bg-red-600'
+                        >
+                            Restart
+                        </button>
+                    }
+                </div>
 
                 <Timer time={time} />
             </div>

@@ -27,6 +27,7 @@ const Page = () => {
     const [paused, setPaused] = useState<boolean>(false)
     const [running, setRunning] = useState<boolean>(false)
     const [typeSpeed, setTypeSpeed] = useState<number>(0)
+    const [typedChars, setTypedChars] = useState<number>(0)
 
     useEffect(() => {
         setParagraph(exampleParagraph1)
@@ -41,21 +42,6 @@ const Page = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [started])
-
-    const handlePause = () => {
-        if (started) {
-            if (!paused) {
-                setRunning(false)
-                setPaused(true)
-                stop()
-            }
-            else {
-                setRunning(true)
-                setPaused(false)
-                start()
-            }
-        }
-    }
 
     useEffect(() => {
         if (!started && pressedKey === ' ') {
@@ -73,6 +59,7 @@ const Page = () => {
                 }
             }
             else {
+                setTypedChars(prev => prev + 1)
                 setWrongKeyPressed(false)
                 setIndex(prev => prev + 1)
             }
@@ -90,7 +77,7 @@ const Page = () => {
                 setNextChar(nextCharacter)
             }
             else {
-                setFinished(true)
+                finishTrial()
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -103,15 +90,35 @@ const Page = () => {
     }, [nextChar])
 
     useEffect(() => {
-        if (finished) {
-            setNextChar(null)
-            setRunning(false)
-            setStarted(false)
-            stop()
+        setTypeSpeed(calculateCPM(typedChars, time))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [time])
+
+    const handlePause = () => {
+        if (started) {
+            if (!paused) {
+                setRunning(false)
+                setPaused(true)
+                stop()
+            }
+            else {
+                setRunning(true)
+                setPaused(false)
+                start()
+            }
         }
-    }, [finished])
+    }
+
+    const finishTrial = () => {
+        setFinished(true)
+        setNextChar(null)
+        setRunning(false)
+        stop()
+    }
 
     const handleReset = () => {
+        setTypedChars(0)
+        setTypeSpeed(0)
         setIndex(0)
         setNextChar(null)
         setPaused(false)
@@ -120,6 +127,16 @@ const Page = () => {
         setFinished(false)
     }
 
+    const calculateCPM = (typedChars: number, time: number) => {
+        if (time === 0) return 0;
+
+        const timeInMinutes = time / 1000 / 60;
+        const cpm = (typedChars / timeInMinutes) / 5;
+
+        return Math.floor(cpm);
+    };
+
+
     return (
         <div
             className='w-screen h-screen bg-white text-black relative'
@@ -127,6 +144,10 @@ const Page = () => {
             <div
                 className='size-full flex flex-col items-center justify-center gap-12'
             >
+                <div className='size-fit text-2xl'>
+                    {typeSpeed}
+                </div>
+
                 <DisplayParagraph text={paragraph ? paragraph : ""} currentIndex={index} wrongIndices={wrongIndices ? wrongIndices : []} />
 
                 <div

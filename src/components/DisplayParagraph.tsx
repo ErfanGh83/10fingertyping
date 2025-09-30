@@ -16,7 +16,7 @@ const DisplayParagraph = ({ text, currentIndex, wrongIndices }: Props) => {
                     // already typed
                     className = wrongIndices.includes(i)
                         ? "text-red-500 bg-red-100" // wrong char
-                        : "text-gray-400"; // correct typed
+                        : "text-blue-400"; // correct typed
                 } else if (i === currentIndex) {
                     className = wrongIndices.includes(i)
                         ? "text-red-500 bg-blue-100 animate-pulse" // wrong char

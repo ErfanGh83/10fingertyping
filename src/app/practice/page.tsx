@@ -9,10 +9,13 @@ import { compareKeys, isUsingAlt, returnNextCharByIndex } from '@/utils'
 import SpaceBarContainer from '@/components/SpaceBarContainer'
 import ShiftContainer from '@/components/ShiftContainer'
 import DisplayParagraph from '@/components/DisplayParagraph'
+import { useTimer } from '@/hooks/useTimer'
+import Timer from '@/components/Timer'
 
 const Page = () => {
 
     const pressedKey = useKeyPress()
+    const { time, start, stop, reset } = useTimer()
     const [nextChar, setNextChar] = useState<string | null>(null)
     const [wrongKeyPressed, setWrongKeyPressed] = useState(false)
     const [shiftIsNeeded, setShiftIsNeeded] = useState(false)
@@ -21,27 +24,48 @@ const Page = () => {
     const [wrongIndices, setWrongIndices] = useState<number[]>([])
     const [finished, setFinished] = useState<boolean>(false)
     const [started, setStarted] = useState<boolean>(false)
+    const [paused, setPaused] = useState<boolean>(false)
     const [running, setRunning] = useState<boolean>(false)
+    const [typeSpeed, setTypeSpeed] = useState<number>(0)
 
     useEffect(() => {
         setParagraph(exampleParagraph1)
     }, [])
 
     useEffect(() => {
-        if (paragraph) {
+        if (paragraph && started) {
             setNextChar(paragraph[0])
             setIndex(0)
+            start()
             setRunning(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [started])
 
     useEffect(() => {
+        if (started) {
+            if (paused) {
+                setRunning(false)
+                stop()
+            }
+            else {
+                setRunning(true)
+                start()
+            }
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [paused])
+
+    useEffect(() => {
         if (!started && pressedKey === ' ') {
             setStarted(true)
         }
+        else if (started && !running && pressedKey === ' ') {
+            setPaused(false)
+        }
 
-        if (nextChar && pressedKey) {
+        if (nextChar && pressedKey && running) {
             if (compareKeys(nextChar, pressedKey) === false) {
                 if (pressedKey !== "Shift") {
                     setWrongKeyPressed(true);
@@ -80,7 +104,7 @@ const Page = () => {
 
     return (
         <div
-            className='w-screen h-screen bg-white text-black'
+            className='w-screen h-screen bg-white text-black relative'
         >
             <div
                 className='size-full flex flex-col items-center justify-center gap-12'
@@ -97,7 +121,7 @@ const Page = () => {
                                 }`}>
                                 <>
                                     {
-                                        index === 3 && <ShiftContainer shiftIsNeeded={shiftIsNeeded} wrongKeyPressed={wrongKeyPressed}/>
+                                        index === 3 && <ShiftContainer shiftIsNeeded={shiftIsNeeded} wrongKeyPressed={wrongKeyPressed} />
                                     }
                                     {
                                         keysRow.map((key) => (
@@ -113,15 +137,29 @@ const Page = () => {
                         <SpaceBarContainer isNext={nextChar === ' '} pressedWrong={wrongKeyPressed && nextChar === ' '} />
                     </div>
                 </div>
-                <button
-                    onClick={() => setStarted(!started)}
-                    className={`size-fit p-2 rounded-md text-xl text-white cursor-pointer ${started ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'
-                        }`}
-                >
-                    {
-                        started ? 'Stop' : 'Start'
-                    }
-                </button>
+
+                {
+                    !started &&
+                    <button
+                        onClick={() => setStarted(true)}
+                        className='size-fit p-2 rounded-md text-xl text-white cursor-pointer bg-blue-500 hover:bg-blue-600'
+                    >
+                        Start
+                    </button>
+                }
+
+                {
+                    started &&
+                    <button
+                        onClick={() => setPaused(!paused)}
+                        className={`size-fit p-2 rounded-md text-xl text-white cursor-pointer ${running ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'
+                            }`}
+                    >
+                        {running ? 'Stop' : 'Continue'}
+                    </button>
+                }
+
+                <Timer time={time} />
             </div>
         </div>
     )

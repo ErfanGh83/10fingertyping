@@ -11,7 +11,13 @@ import ShiftContainer from '@/components/ShiftContainer'
 import DisplayParagraph from '@/components/DisplayParagraph'
 import { useTimer } from '@/hooks/useTimer'
 import Timer from '@/components/Timer'
-import SpeedFlame from '@/components/SpeedFlame'
+import { BsSpeedometer } from 'react-icons/bs'
+import { MdRestartAlt, MdSpeed } from 'react-icons/md'
+import { DiDart } from 'react-icons/di'
+import { TbTargetArrow } from 'react-icons/tb'
+import ResultBoard from '@/components/ResultBoard'
+import { BiStop } from 'react-icons/bi'
+import { VscDebugContinue } from 'react-icons/vsc'
 
 const Page = () => {
 
@@ -29,6 +35,7 @@ const Page = () => {
     const [running, setRunning] = useState<boolean>(false)
     const [typeSpeed, setTypeSpeed] = useState<number>(0)
     const [typedChars, setTypedChars] = useState<number>(0)
+    const [accuracy, setAccuracy] = useState<number>(100)
 
     useEffect(() => {
         setParagraph(exampleParagraph1)
@@ -122,12 +129,17 @@ const Page = () => {
         setFinished(true)
         setNextChar(null)
         setRunning(false)
+        if (paragraph) {
+            setAccuracy(calculateAccuracy(wrongIndices.length, paragraph?.length))
+            console.log(accuracy)
+        }
         stop()
     }
 
     const handleReset = () => {
         setTypedChars(0)
         setTypeSpeed(0)
+        setAccuracy(100)
         setIndex(0)
         setNextChar(null)
         setPaused(false)
@@ -147,6 +159,11 @@ const Page = () => {
         return Math.floor(cpm);
     };
 
+    const calculateAccuracy = (wrongIndicesCount: number, paragraphLength: number) => {
+
+        return Math.floor(100 - ((wrongIndicesCount * 100) / paragraphLength));
+    }
+
 
     return (
         <div
@@ -155,6 +172,11 @@ const Page = () => {
             <div
                 className='size-full flex flex-col items-center justify-center gap-12'
             >
+                <Timer time={time} />
+                {
+                    finished && paragraph &&
+                    <ResultBoard typeSpeed={typeSpeed} accuracy={accuracy} />
+                }
 
                 <DisplayParagraph text={paragraph ? paragraph : ""} currentIndex={index} wrongIndices={wrongIndices ? wrongIndices : []} typeSpeed={typeSpeed} />
 
@@ -200,10 +222,9 @@ const Page = () => {
                         started && !finished &&
                         <button
                             onClick={handlePause}
-                            className={`size-fit p-2 rounded-md text-xl text-white cursor-pointer ${running ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-blue-500 hover:bg-blue-600'
-                                }`}
+                            className='size-12 flex items-center justify-center rounded-md text-xl text-white cursor-pointer bg-blue-500 hover:bg-blue-600'
                         >
-                            {running ? 'Stop' : 'Continue'}
+                            {running ? <BiStop size={30}/> : <VscDebugContinue size={30}/>}
                         </button>
                     }
 
@@ -211,14 +232,16 @@ const Page = () => {
                         started &&
                         <button
                             onClick={handleReset}
-                            className='size-fit p-2 rounded-md text-xl text-white cursor-pointer bg-red-500 hover:bg-red-600'
+                            className='size-12 flex items-center justify-center rounded-md text-xl text-white cursor-pointer bg-red-500 hover:bg-red-600'
                         >
-                            Restart
+                            <MdRestartAlt size={30}/>
                         </button>
                     }
                 </div>
 
-                <Timer time={time} />
+                <div className='w-56 h-screen flex flex-col items-center bg-gray-400 absolute z-11 top-0 left-0'>
+                    <div className='w-full h-16 bg-blue-400'></div>
+                </div>
             </div>
         </div>
     )

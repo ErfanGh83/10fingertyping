@@ -37,6 +37,7 @@ const Page = () => {
 
     useEffect(() => {
         setParagraph(exampleParagraph1)
+        setNextChar(exampleParagraph1[0])
     }, [])
 
     useEffect(() => {
@@ -88,7 +89,7 @@ const Page = () => {
             }
         }
 
-        if(running && pressedKey === 'Alt') {
+        if (running && pressedKey === 'Alt') {
             handlePause()
         }
 
@@ -152,7 +153,6 @@ const Page = () => {
         setTypeSpeed(0)
         setAccuracy(100)
         setIndex(0)
-        setNextChar(null)
         setPaused(false)
         setWrongKeyPressed(false)
         setShiftIsNeeded(false)

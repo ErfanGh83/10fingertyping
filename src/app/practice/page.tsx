@@ -63,10 +63,7 @@ const Page = () => {
             audio.play().catch(() => { });
         }
 
-        if (!started && pressedKey === " ") {
-            setStarted(true);
-        }
-        else if (!started && paragraph && pressedKey === paragraph[0]) {
+        if (!started && paragraph && pressedKey === paragraph[0]) {
             setTypedChars((prev) => prev + 1);
             setWrongKeyPressed(false);
             setIndex((prev) => prev + 1);
@@ -221,12 +218,12 @@ const Page = () => {
                 <div className='size-fit flex flex-row-reverse gap-4'>
                     {
                         !started && !finished &&
-                        <button
+                        <p
                             onClick={() => setStarted(true)}
-                            className='w-16 h-12 flex items-center justify-center rounded-md text-xl text-white cursor-pointer bg-blue-500 hover:bg-blue-600'
+                            className='w-fit flex items-center justify-center text-xl text-blue-500'
                         >
-                            Start
-                        </button>
+                            *Start by entering the right character*
+                        </p>
                     }
 
                     {

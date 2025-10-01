@@ -2,9 +2,9 @@ import { useState } from "react";
 import { MdArrowForwardIos } from "react-icons/md";
 import { BsPerson } from "react-icons/bs";
 import { BiBookOpen, BiSupport } from "react-icons/bi";
-import { TbTournament } from "react-icons/tb";
 import { CiSettings } from "react-icons/ci";
 import Link from "next/link";
+import { FaRankingStar } from "react-icons/fa6";
 
 export default function Sidebar() {
     const [sideBarIsOpen, setSideBarIsOpen] = useState(false);
@@ -21,9 +21,9 @@ export default function Sidebar() {
             link: '/courses'
         },
         {
-            icon: <TbTournament size={24} />,
-            content: 'Tournament',
-            link: '/tournament'
+            icon: <FaRankingStar size={24} />,
+            content: 'Rankings',
+            link: '/rankings'
         },
         {
             icon: <CiSettings size={24} />,

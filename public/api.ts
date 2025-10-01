@@ -63,4 +63,4 @@ export const keysList = [
 
 
 
-export const exampleParagraph1 = 'Hello! this is a paragraph for practice.'
+export const exampleParagraph1 = 'Suka blyat mirghadri'

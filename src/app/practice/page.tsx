@@ -178,13 +178,17 @@ const Page = () => {
             className='w-screen h-screen bg-gray-100 text-black relative'
         >
             <div
-                className='size-full flex flex-col items-center justify-center gap-12 overflow-y-auto overflow-x-hidden pt-24 sm:pt-12'
+                className='size-full flex flex-col items-center pt-12 gap-8 overflow-y-auto overflow-x-hidden pt-24 sm:pt-12'
             >
-                <Timer time={time} />
-                {
-                    finished && paragraph &&
-                    <ResultBoard typeSpeed={typeSpeed} accuracy={accuracy} />
-                }
+                <div className='w-fit h-56 flex flex-row items-center justify-center gap-8 relative'>
+                    <Timer time={time} />
+                    {
+                        finished && paragraph &&
+                        <div className='absolute z-20 top-0'>
+                            <ResultBoard typeSpeed={typeSpeed} accuracy={accuracy} time={time}/>
+                        </div>
+                    }
+                </div>
 
                 <DisplayParagraph text={paragraph ? paragraph : ""} currentIndex={index} wrongIndices={wrongIndices ? wrongIndices : []} typeSpeed={typeSpeed} />
 

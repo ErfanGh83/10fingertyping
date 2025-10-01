@@ -40,9 +40,13 @@ const Page = () => {
     }, [])
 
     useEffect(() => {
-        if (paragraph && started) {
+        if (paragraph && started && index === 0) {
             setNextChar(paragraph[0])
             setIndex(0)
+            start()
+            setRunning(true)
+        }
+        else if (started) {
             start()
             setRunning(true)
         }
@@ -60,7 +64,14 @@ const Page = () => {
 
         if (!started && pressedKey === " ") {
             setStarted(true);
-        } else if (started && !running && pressedKey === " ") {
+        }
+        else if (!started && paragraph && pressedKey === paragraph[0]) {
+            setTypedChars((prev) => prev + 1);
+            setWrongKeyPressed(false);
+            setIndex((prev) => prev + 1);
+            setStarted(true)
+        }
+        else if (started && !running && pressedKey === " ") {
             handlePause();
         }
 
@@ -75,6 +86,10 @@ const Page = () => {
                 setWrongKeyPressed(false);
                 setIndex((prev) => prev + 1);
             }
+        }
+
+        if(running && pressedKey === 'Alt') {
+            handlePause()
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -128,7 +143,6 @@ const Page = () => {
         setRunning(false)
         if (paragraph) {
             setAccuracy(calculateAccuracy(wrongIndices.length, paragraph?.length))
-            console.log(accuracy)
         }
         stop()
     }
@@ -167,7 +181,7 @@ const Page = () => {
             className='w-screen h-screen bg-gray-100 text-black relative'
         >
             <div
-                className='size-full flex flex-col items-center justify-center gap-12'
+                className='size-full flex flex-col items-center justify-center gap-12 overflow-y-auto overflow-x-hidden pt-24 sm:pt-12'
             >
                 <Timer time={time} />
                 {

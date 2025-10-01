@@ -11,6 +11,7 @@ import ShiftContainer from '@/components/ShiftContainer'
 import DisplayParagraph from '@/components/DisplayParagraph'
 import { useTimer } from '@/hooks/useTimer'
 import Timer from '@/components/Timer'
+import SpeedFlame from '@/components/SpeedFlame'
 
 const Page = () => {
 
@@ -130,6 +131,7 @@ const Page = () => {
         setIndex(0)
         setNextChar(null)
         setPaused(false)
+        setWrongKeyPressed(false)
         reset()
         setStarted(false)
         setFinished(false)
@@ -152,8 +154,12 @@ const Page = () => {
             <div
                 className='size-full flex flex-col items-center justify-center gap-12'
             >
-                <div className='size-fit text-2xl'>
-                    {typeSpeed}
+
+                <div className='size-20 relative flex items-center justify-center'>
+                    <SpeedFlame typeSpeed={typeSpeed}/>
+                    <div className={`size-fit text-2xl absolute z-10 mt-6 font-semibold ${typeSpeed >= 50 ? 'text-white text-shadow-lg' : ''}`}>
+                        {typeSpeed}
+                    </div>
                 </div>
 
                 <DisplayParagraph text={paragraph ? paragraph : ""} currentIndex={index} wrongIndices={wrongIndices ? wrongIndices : []} />

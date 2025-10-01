@@ -5,7 +5,7 @@ import Image from "next/image"
 
 export default function SpeedFlame({ typeSpeed }: { typeSpeed: number }) {
   return (
-    <div className="size-8 relative flex items-center justify-center text-black">
+    <div className="size-12 relative flex items-center justify-center text-black pb-8">
       <AnimatePresence>
         {typeSpeed >= 50 && (
           <motion.div
@@ -25,8 +25,8 @@ export default function SpeedFlame({ typeSpeed }: { typeSpeed: number }) {
       </AnimatePresence>
 
       <div
-        className={`size-fit text-xs absolute z-10 font-semibold mt-2 ${
-          typeSpeed >= 50 ? "text-black rounded-full bg-white" : ""
+        className={`size-6 flex items-center justify-center text-xs absolute z-10 font-semibold mt-2 rounded-full bg-white ${
+          typeSpeed >= 50 ? "text-black" : "border-[1px] border-gray-300"
         }`}
       >
         {typeSpeed}

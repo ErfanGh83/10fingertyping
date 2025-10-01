@@ -11,13 +11,11 @@ import ShiftContainer from '@/components/ShiftContainer'
 import DisplayParagraph from '@/components/DisplayParagraph'
 import { useTimer } from '@/hooks/useTimer'
 import Timer from '@/components/Timer'
-import { BsSpeedometer } from 'react-icons/bs'
-import { MdRestartAlt, MdSpeed } from 'react-icons/md'
-import { DiDart } from 'react-icons/di'
-import { TbTargetArrow } from 'react-icons/tb'
 import ResultBoard from '@/components/ResultBoard'
 import { BiStop } from 'react-icons/bi'
 import { VscDebugContinue } from 'react-icons/vsc'
+import Sidebar from '@/components/SideBar'
+import { MdRestartAlt } from 'react-icons/md'
 
 const Page = () => {
 
@@ -167,7 +165,7 @@ const Page = () => {
 
     return (
         <div
-            className='w-screen h-screen bg-white text-black relative'
+            className='w-screen h-screen bg-gray-100 text-black relative'
         >
             <div
                 className='size-full flex flex-col items-center justify-center gap-12'
@@ -224,7 +222,7 @@ const Page = () => {
                             onClick={handlePause}
                             className='size-12 flex items-center justify-center rounded-md text-xl text-white cursor-pointer bg-blue-500 hover:bg-blue-600'
                         >
-                            {running ? <BiStop size={30}/> : <VscDebugContinue size={30}/>}
+                            {running ? <BiStop size={30} /> : <VscDebugContinue size={30} />}
                         </button>
                     }
 
@@ -234,14 +232,12 @@ const Page = () => {
                             onClick={handleReset}
                             className='size-12 flex items-center justify-center rounded-md text-xl text-white cursor-pointer bg-red-500 hover:bg-red-600'
                         >
-                            <MdRestartAlt size={30}/>
+                            <MdRestartAlt size={30} />
                         </button>
                     }
                 </div>
 
-                <div className='w-56 h-screen flex flex-col items-center bg-gray-400 absolute z-11 top-0 left-0'>
-                    <div className='w-full h-16 bg-blue-400'></div>
-                </div>
+                <Sidebar />
             </div>
         </div>
     )

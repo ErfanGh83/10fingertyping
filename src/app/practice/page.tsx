@@ -52,7 +52,6 @@ const Page = () => {
     useEffect(() => {
         if (!pressedKey) return;
 
-        // play sound for every key (except Shift, if you don’t want it)
         if (pressedKey !== "Shift") {
             const audio = new Audio("/sounds/keysound.wav");
             audio.currentTime = 0;
@@ -62,7 +61,7 @@ const Page = () => {
         if (!started && pressedKey === " ") {
             setStarted(true);
         } else if (started && !running && pressedKey === " ") {
-            setPaused(false);
+            handlePause();
         }
 
         if (nextChar && pressedKey && running) {
@@ -210,7 +209,7 @@ const Page = () => {
                         !started && !finished &&
                         <button
                             onClick={() => setStarted(true)}
-                            className='size-fit p-2 rounded-md text-xl text-white cursor-pointer bg-blue-500 hover:bg-blue-600'
+                            className='w-16 h-12 flex items-center justify-center rounded-md text-xl text-white cursor-pointer bg-blue-500 hover:bg-blue-600'
                         >
                             Start
                         </button>

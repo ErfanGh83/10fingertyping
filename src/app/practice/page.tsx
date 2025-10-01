@@ -132,6 +132,7 @@ const Page = () => {
         setNextChar(null)
         setPaused(false)
         setWrongKeyPressed(false)
+        setShiftIsNeeded(false)
         reset()
         setStarted(false)
         setFinished(false)
@@ -155,14 +156,7 @@ const Page = () => {
                 className='size-full flex flex-col items-center justify-center gap-12'
             >
 
-                <div className='size-20 relative flex items-center justify-center'>
-                    <SpeedFlame typeSpeed={typeSpeed}/>
-                    <div className={`size-fit text-2xl absolute z-10 mt-6 font-semibold ${typeSpeed >= 50 ? 'text-white text-shadow-lg' : ''}`}>
-                        {typeSpeed}
-                    </div>
-                </div>
-
-                <DisplayParagraph text={paragraph ? paragraph : ""} currentIndex={index} wrongIndices={wrongIndices ? wrongIndices : []} />
+                <DisplayParagraph text={paragraph ? paragraph : ""} currentIndex={index} wrongIndices={wrongIndices ? wrongIndices : []} typeSpeed={typeSpeed} />
 
                 <div
                     className='w-fit flex flex-col gap-2 items-center justify-center'
